@@ -42,19 +42,17 @@ func newConstantInfo(tag uint8, cp ConstantPool) ConstantInfo {
 	case CONSTANT_Class:
 		return &ConstantClassInfo{cp: cp}
 	case CONSTANT_Filedref:
-		return &ConstantFiledrefInfo{ConstantMemberref{cp: cp}}
+		return &ConstantFiledrefInfo{ConstantMemberrefInfo{cp: cp}}
 	case CONSTANT_Methodref:
-		return &ConstanMethodrefInfo{ConstantMemberref{cp: cp}}
+		return &ConstanMethodrefInfo{ConstantMemberrefInfo{cp: cp}}
 	case CONSTANT_InterfaceMethodref:
-		return &ConstantInterfaceMethodrefInfo{ConstantMemberref{cp: cp}}
-	case CONSTANT_Filedref:
-		return &ConstantFiledRefInfo{ConstantMemberref{cp: cp}}
+		return &ConstantInterfaceMethodrefInfo{ConstantMemberrefInfo{cp: cp}}
 	case CONSTANT_MethodType:
 		return &ConstantMethodTypeInfo{}
 	case CONSTANT_NameAndType:
 		return &ConstantNameAndTypeInfo{}
 	case CONSTANT_MethodHandle:
-		return &ConstantMethodHandleType{}
+		return &ConstantMethodHandleInfo{}
 	case CONSTANT_InvokeDynamic:
 		return &ConstantInvokeDynamicInfo{}
 	default:
@@ -69,7 +67,7 @@ func (constantPool ConstantPool) getConstantInfo(index uint16) ConstantInfo {
 	panic("Invalid constant pool index!")
 }
 func (constantPool ConstantPool) getNameType(index uint16) (string, string) {
-	ntIfdo := constantPool.getConstantInfo(index).(*ConstantNameAndTypeInfo)
+	ntInfo := constantPool.getConstantInfo(index).(*ConstantNameAndTypeInfo)
 	name := constantPool.getUtf8(ntInfo.nameIndex)
 	_type := constantPool.getUtf8(ntInfo.descriptorIndex)
 	return name, _type
